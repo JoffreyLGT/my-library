@@ -34,10 +34,10 @@ class App extends Component {
       <div>
         {this.state && this.state.data ? (
           <div>
-            <header>
-              <h1>{this.state.data.name}'s library</h1>
+            <header className="header">
+              <h1 className="title">{this.state.data.name}'s library</h1>
               <div>
-                <input type="text" placeholder="Search" onChange={(e) => {
+                <input className="search" type="text" placeholder="Search" onChange={(e) => {
                   let stringToSearch = e.target.value;
                   let newState = Object.assign({}, this.state);
                   newState.data.items = fakeServerData.items.filter((item) => {
@@ -46,7 +46,7 @@ class App extends Component {
                   this.setState(newState)} 
                   }
                 />
-                <span style={{'margin-left':'10px'}}>{this.state.data.items.length} items</span>
+                <span>{this.state.data.items.length} items</span>
               </div>
             </header>
             <hr />
@@ -57,7 +57,7 @@ class App extends Component {
             </div>
           </div>
         ) : (
-          <div><span>Loading in progress...</span></div>
+          <div><h1 className="title">Loading in progress...</h1></div>
         )}
       </div>
     );

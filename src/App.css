@@ -1,8 +1,26 @@
 body{
   padding:10px;
+  background: #fafafa;
 }
 
+.header{
+  margin:10px;
+}
+.title{
+  font-family: "Segoe print", Times, serif;
+}
 
+.search{
+  height: 30px;
+  width: 180px;
+  margin-right:20px;
+  margin-bottom: 10px;
+  padding-left: 10px;
+  border-radius: 6px;
+  box-shadow: 0 2px 3px rgba(10,10,10,.1), 0 0 0 1px rgba(10,10,10,.1);
+  color: #4a4a4a;
+  border-width: 0px;
+}
 
 .itemList{
   display: flex;
@@ -13,8 +31,12 @@ body{
 .item{
   width:150px;
   height:200px;
-  border:grey;
-  border-style:solid;
-  padding:10px;
   margin: 10px;
+  
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 3px rgba(10,10,10,.1), 0 0 0 1px rgba(10,10,10,.1);
+  color: #4a4a4a;
+  display: block;
+  padding: 1.25rem;
 }
