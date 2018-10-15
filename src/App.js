@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
+import Item from './components/Item';
 import './App.css';
 
 let fakeServerData = {
   'name': 'Joffrey',
   'items':[
     {
-      'name':'Halo 5',
-      'platform':'Xbox One'
+      'name':'Sim City',
+      'platform':'pc',
     },
     {
       'name':'Doom',
-      'platform':'PC'
+      'platform':'Xbox One',
+      'url':'https://www.mobygames.com/images/covers/l/330671-doom-xbox-one-front-cover.png',
     }
   ]
 }
@@ -50,10 +52,11 @@ class App extends Component {
               </div>
             </header>
             <hr />
-            <div className="itemList">
-              {this.state.data.items ? this.state.data.items.map((item, i) => 
-                <div className="item" key={i}>{item.name}</div> 
-              ):''}      
+            <div className="item-list">
+              {this.state.data.items
+                ? this.state.data.items.map((item, i) => 
+                  <Item key={i} name={item.name} platform={item.platform} url={item.url} /> )
+                : ''}      
             </div>
           </div>
         ) : (
