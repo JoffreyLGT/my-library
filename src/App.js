@@ -2,21 +2,7 @@ import React, { Component } from 'react';
 import Item from './components/Item';
 import './App.css';
 
-let fakeServerData = {
-  'name': 'Joffrey',
-  'items':[
-    {
-      'name':'Sim City',
-      'platform':'pc',
-    },
-    {
-      'name':'Doom',
-      'platform':'Xbox One',
-      'url':'https://www.mobygames.com/images/covers/l/330671-doom-xbox-one-front-cover.png',
-    }
-  ]
-}
-
+import fakeServerData from './FakeServerData';
 
 class App extends Component {
 

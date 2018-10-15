@@ -56,14 +56,21 @@ body{
 }
 
 .item__name{  
-  height: 87%;
+  height: 100%;
   border-radius: 0 0 6px 6px;
-  line-height: 7;
   font-size: 1.3em;
+  display:table;
+}
+
+.item__name p{
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .item__platform{
   text-transform: uppercase;
   border-radius: 6px 6px 0 0;
   background: rgb(128,128,128, 0.5);
+  position: absolute;
+  top:0;
 }

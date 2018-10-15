@@ -12,7 +12,9 @@ const Item = ({name, platform, url})=>{
        : (
           <div className="item">
             <div className='item__platform'>{platform}</div>
-            <div className='item__name'>{name}</div> 
+            <div className='item__name'>
+              <p>{name}</p>
+            </div> 
           </div>   
        )
       }
