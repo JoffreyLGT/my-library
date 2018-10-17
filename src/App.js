@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Item from './components/Item';
 import ItemModal from './components/ItemModal';
 import './App.css';
+import 'bulma/css/bulma.css';
 
 import fakeServerData from './FakeServerData';
 
@@ -36,12 +37,7 @@ class App extends Component {
                   }
                 />
                 <span>{this.state.data.items.length} items</span>
-                <div>
-                  <button type="button" onClick={()=>{
-                    document.getElementById("addGameModal").style.display = "block";
-                  }}>Add new item</button>
-                  <ItemModal id="addGameModal" />
-                </div>
+                <ItemModal id="addItemModal"/>
               </div>
             </header>
             <hr />
