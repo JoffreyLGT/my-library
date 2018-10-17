@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const Item = ({name, platform, url})=>{
   return (  
