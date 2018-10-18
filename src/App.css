@@ -1,25 +1,19 @@
-body{
-  padding:10px;
-  background: #fafafa;
+#root{
+  margin:20px;
 }
 
 .header{
   margin:10px;
 }
-.title{
-  font-family: "Segoe print", Times, serif;
+
+.header__bar{
+  display: inline-flex;
 }
 
-.search{
-  height: 30px;
-  width: 180px;
-  margin-right:20px;
+.header__title{
+  font-family: "Segoe print", Times, serif;
+  font-size: 2em;
   margin-bottom: 10px;
-  padding-left: 10px;
-  border-radius: 6px;
-  box-shadow: 0 2px 3px rgba(10,10,10,.1), 0 0 0 1px rgba(10,10,10,.1);
-  color: #4a4a4a;
-  border-width: 0px;
 }
 
 .item-list{
@@ -70,7 +64,7 @@ body{
 .item__platform{
   text-transform: uppercase;
   border-radius: 6px 6px 0 0;
-  background: rgb(128,128,128, 0.5);
+  background: #adadad;
   position: absolute;
   top:0;
 }

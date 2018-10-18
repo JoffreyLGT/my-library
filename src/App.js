@@ -25,19 +25,27 @@ class App extends Component {
         {this.state && this.state.data ? (
           <div>
             <header className="header">
-              <h1 className="title">{this.state.data.name}'s library</h1>
-              <div>
-                <input className="search" type="text" placeholder="Search" onChange={(e) => {
-                  let stringToSearch = e.target.value;
-                  let newState = Object.assign({}, this.state);
-                  newState.data.items = fakeServerData.items.filter((item) => {
-                    return item.name.toLowerCase().includes(stringToSearch)
-                  })
-                  this.setState(newState)} 
-                  }
-                />
-                <span>{this.state.data.items.length} items</span>
+              <h1 className="header__title">{this.state.data.name}'s library</h1>
+              <div className="header__bar">
                 <ItemModal id="addItemModal"/>
+                <div 
+                  class="control"
+                  style={{'padding':'0 10px 0 10px'}}>
+                  <input 
+                    className="input is-small"
+                    type="text" 
+                    placeholder="Search" 
+                    onChange={(e) => {
+                      let stringToSearch = e.target.value;
+                      let newState = Object.assign({}, this.state);
+                      newState.data.items = fakeServerData.items.filter((item) => {
+                        return item.name.toLowerCase().includes(stringToSearch)
+                      })
+                      this.setState(newState)} 
+                    }
+                  />
+                </div>
+                <span>{this.state.data.items.length} items</span>
               </div>
             </header>
             <hr />
@@ -49,7 +57,7 @@ class App extends Component {
             </div>
           </div>
         ) : (
-          <div><h1 className="title">Loading in progress...</h1></div>
+          <div className="header"><h1 className="header__title">Loading in progress...</h1></div>
         )}
       </div>
     );
