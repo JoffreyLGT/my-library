@@ -39,6 +39,12 @@
 
   position: relative;
   text-align: center;
+
+  transition: transform .3s ease-out;
+}
+
+.item:hover{
+  transform: scale(1.2);
 }
 
 .item img{
