@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Item = ({name, platform, url})=>{
+const Item = ({name, platform, url, onClick})=>{
   return (  
-    <div>
+    <div onClick={onClick}>
       { url 
        ? (
          <div className="item">
