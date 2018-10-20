@@ -6,7 +6,7 @@ const Item = ({name, platform, url})=>{
       { url 
        ? (
          <div className="item">
-            <img src={url} />
+            <img src={url} alt={name + "'s cover"} />
           </div>
          )
        : (
