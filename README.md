@@ -1,1 +1,0 @@
-The objective of this application will be to provide a simple solution to manage your collections of things.
