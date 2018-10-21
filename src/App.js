@@ -30,18 +30,21 @@ class App extends Component {
   }
 
   addItem(item) {
-    let newData = Object.assign(this.state.data.items);
-    newData.push(item);
-    this.setState(newData);
+    let newItems = Object.assign([], this.state.data.items);
+    newItems.push(item);
+
+    let newState = Object.assign({}, this.state);
+    newState.data.items = Object.assign([], newItems);
+    this.setState(newState);
   }
 
   updateItem(item) {
-    console.log("i'm called!");
-    let newData = Object.assign(this.state.data.items)
-    newData[item.key] = item;
-    // newData.push(item);
-    console.log(newData)
-    this.setState(newData);
+    let newItems = Object.assign([], this.state.data.items)
+    newItems[item.key] = item;
+
+    let newState = Object.assign({}, this.state);
+    newState.data.items = Object.assign([], newItems);
+    this.setState(newState);
   }
 
   render() {
@@ -114,7 +117,10 @@ class App extends Component {
                 ? "Add a new item"
                 : "Edit an item"}
               modalItem={this.state.modalItem}
-              onHide={()=> this.setState({'showModal':'false'})}
+              onHide={()=> this.setState({
+                'modalItem': {},
+                'showModal':'false'
+               })}
               onSave={this.state.modalAction === 'add' 
                 ? this.addItem
                 : this.updateItem}
