@@ -30,18 +30,21 @@ class App extends Component {
   }
 
   addItem(item) {
-    let newData = Object.assign(this.state.data.items);
-    newData.push(item);
-    this.setState(newData);
+    let newItems = Object.assign([], this.state.data.items);
+    newItems.push(item);
+
+    let newState = Object.assign({}, this.state);
+    newState.data.items = Object.assign([], newItems);
+    this.setState(newState);
   }
 
   updateItem(item) {
-    console.log("i'm called!");
-    let newData = Object.assign(this.state.data.items)
-    newData[item.key] = item;
-    // newData.push(item);
-    console.log(newData)
-    this.setState(newData);
+    let newItems = Object.assign([], this.state.data.items)
+    newItems[item.key] = item;
+
+    let newState = Object.assign({}, this.state);
+    newState.data.items = Object.assign([], newItems);
+    this.setState(newState);
   }
 
   render() {
