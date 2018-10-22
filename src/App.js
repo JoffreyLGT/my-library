@@ -4,18 +4,19 @@ import ItemModal from "./components/ItemModal";
 import "./App.css";
 import "bulma/css/bulma.css";
 
-import fakeServerData from "./FakeServerData";
+import { fakeServerData, fakePlatformsData } from "./FakeServerData";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      'showModal':'false',
-      'modalAction':'add',
-      'modalItem':{}
-    }
+      showModal: "false",
+      modalAction: "add",
+      modalItem: {}
+    };
     this.addItem = this.addItem.bind(this);
     this.updateItem = this.updateItem.bind(this);
+    this.filterItems = this.filterItems.bind(this);
   }
 
   componentDidMount() {
@@ -24,27 +25,71 @@ class App extends Component {
     let data = Object.assign({}, fakeServerData);
     setTimeout(() => {
       this.setState({
-        data
+        serverData: Object.assign({}, data),
+        data: Object.assign({}, data)
       });
     }, 1000);
+    let platforms = Object.assign([], fakePlatformsData);
+    setTimeout(() => {
+      this.setState({
+        platforms
+      });
+    }, 3000);
   }
 
+  /** Add an item in the serverData state and trigger filterItems(). */
   addItem(item) {
-    let newItems = Object.assign([], this.state.data.items);
-    newItems.push(item);
+    let newItems = Object.assign([], this.state.serverData.items);
+    // Get the last id in the serverData
+    let lastId = newItems.reduce(
+      (biggest, current) => (biggest < current.id ? current.id : biggest),
+      0
+    );
+    let newItem = Object.assign({}, item, { id: lastId + 1 });
+    newItems.push(newItem);
 
     let newState = Object.assign({}, this.state);
-    newState.data.items = Object.assign([], newItems);
+    newState.serverData.items = Object.assign([], newItems);
     this.setState(newState);
+    this.filterItems();
   }
 
+  /** Update an item in the serverData state and trigger filterItems(). */
   updateItem(item) {
-    let newItems = Object.assign([], this.state.data.items)
-    newItems[item.key] = item;
+    // Copie the serverData in a new array.
+    let newItems = Object.assign([], this.state.serverData.items);
+    // Get the item position in the list and update the item.
+    let itemPosition = newItems.findIndex(
+      currentItem => currentItem.id === item.id
+    );
 
+    newItems[itemPosition] = item;
+    // Assign the new items in the serverData and set the new state.
     let newState = Object.assign({}, this.state);
-    newState.data.items = Object.assign([], newItems);
+    newState.serverData.items = Object.assign([], newItems);
     this.setState(newState);
+    // Trigger the filter.
+    this.filterItems();
+  }
+
+  /** Filter the list of elements displayed on the page. */
+  filterItems() {
+    // Get the values from the fields
+    let stringToSearch = document.getElementById("searchItem").value;
+    let selectedPlatform = document.getElementById("platformFilter").value;
+
+    // Declare a new object and filter it
+    let filteredState = Object.assign({}, this.state);
+    let serverItems = Object.assign([], filteredState.serverData.items);
+    filteredState.data.items = serverItems.filter(
+      item =>
+        item.name.toLowerCase().includes(stringToSearch) &&
+        (selectedPlatform.toLowerCase() === "all platforms" ||
+          item.platform.toLowerCase() === selectedPlatform.toLowerCase())
+    );
+
+    // Set this object as a new state
+    this.setState(filteredState);
   }
 
   render() {
@@ -58,34 +103,40 @@ class App extends Component {
                 's library
               </h1>
               <div className="header__bar">
-                <span 
-                  className="button is-primary" 
-                  onClick={()=> this.setState(
-                    {
-                      'showModal':'true',
-                      'modalAction':'add',
-                      'modalItem':{}
-                    })}>
+                <span
+                  className="button is-primary"
+                  onClick={() =>
+                    this.setState({
+                      showModal: "true",
+                      modalAction: "add",
+                      modalItem: {}
+                    })
+                  }
+                >
                   Add a new item
                 </span>
                 <div className="control" style={{ padding: "0 10px 0 10px" }}>
                   <input
+                    id="searchItem"
                     className="input"
                     type="text"
                     placeholder="Search"
-                    onChange={e => {
-                      let stringToSearch = e.target.value;
-                      let newState = Object.assign({}, this.state);
-                      newState.data.items = fakeServerData.items.filter(
-                        item => {
-                          return item.name
-                            .toLowerCase()
-                            .includes(stringToSearch);
-                        }
-                      );
-                      this.setState(newState);
-                    }}
+                    onChange={this.filterItems}
                   />
+                </div>
+                <div style={{ padding: "0 10px 0 0px" }}>
+                  <div className="control">
+                    <div className="select">
+                      <select id="platformFilter" onChange={this.filterItems}>
+                        <option>All Platforms</option>
+                        {this.state.platforms
+                          ? this.state.platforms.map((platform, i) => (
+                              <option key={i}>{platform}</option>
+                            ))
+                          : ""}
+                      </select>
+                    </div>
+                  </div>
                 </div>
                 <span>{this.state.data.items.length} items</span>
               </div>
@@ -96,16 +147,18 @@ class App extends Component {
                 ? this.state.data.items.map((item, i) => (
                     <Item
                       key={i}
+                      id={item.id}
                       name={item.name}
                       platform={item.platform}
                       url={item.url}
-                      onClick={()=> this.setState(
-                        {
-                          'modalItem': Object.assign({}, item, {'key':i}),
-                          'showModal':'true',
-                          'modalAction':'edit'
-                        })}
-                      />
+                      onClick={() =>
+                        this.setState({
+                          modalItem: Object.assign({}, item, { key: i }),
+                          showModal: "true",
+                          modalAction: "edit"
+                        })
+                      }
+                    />
                   ))
                 : ""}
             </div>
@@ -113,17 +166,24 @@ class App extends Component {
               id="addItemModal"
               action={this.state.modalAction}
               visible={this.state.showModal}
-              title= {this.state.modalAction === 'add' 
-                ? "Add a new item"
-                : "Edit an item"}
+              platforms={this.state.platforms}
+              title={
+                this.state.modalAction === "add"
+                  ? "Add a new item"
+                  : "Edit an item"
+              }
               modalItem={this.state.modalItem}
-              onHide={()=> this.setState({
-                'modalItem': {},
-                'showModal':'false'
-               })}
-              onSave={this.state.modalAction === 'add' 
-                ? this.addItem
-                : this.updateItem}
+              onHide={() =>
+                this.setState({
+                  modalItem: {},
+                  showModal: "false"
+                })
+              }
+              onSave={
+                this.state.modalAction === "add"
+                  ? this.addItem
+                  : this.updateItem
+              }
             />
           </div>
         ) : (

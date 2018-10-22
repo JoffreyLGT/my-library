@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Item from "./Item";
 
 const emptyState = {
+  id:'',
   name:'',
   platform:'PC',
   url:'',
@@ -31,7 +32,7 @@ class ItemModal extends Component {
   }
 
   render() {
-    const { id, title, onSave, visible, onHide } = this.props;
+    const { id, platforms, title, onSave, visible, onHide } = this.props;
 
     /** Empties the fields, the states and calls onHide props. */
     const closeModal = () => {
@@ -98,9 +99,10 @@ class ItemModal extends Component {
                           value={this.state.platform}
                           onChange={this.updateItem}
                         >
-                          <option value="PC">PC</option>
-                          <option value="Switch">Switch</option>
-                          <option value="Xbox One">Xbox One</option>
+                        {platforms 
+                          ? platforms.map(
+                            (platform, i) => <option  key={i} value={platform}>{platform}</option>)
+                          : ''}
                         </select>
                       </div>
                     </div>
