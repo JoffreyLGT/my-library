@@ -80,15 +80,13 @@ class App extends Component {
 
     // Declare a new object and filter it
     let filteredState = Object.assign({}, this.state);
-
     let serverItems = Object.assign([], filteredState.serverData.items);
-    filteredState.data.items = serverItems
-      .filter(item => item.name.toLowerCase().includes(stringToSearch))
-      .filter(
-        item =>
-          selectedPlatform.toLowerCase() === "all platforms" ||
-          item.platform.toLowerCase() === selectedPlatform.toLowerCase()
-      );
+    filteredState.data.items = serverItems.filter(
+      item =>
+        item.name.toLowerCase().includes(stringToSearch) &&
+        (selectedPlatform.toLowerCase() === "all platforms" ||
+          item.platform.toLowerCase() === selectedPlatform.toLowerCase())
+    );
 
     // Set this object as a new state
     this.setState(filteredState);
