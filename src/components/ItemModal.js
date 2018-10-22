@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Item from "./Item";
 
 const emptyState = {
+  id:'',
   name:'',
   platform:'PC',
   url:'',
@@ -100,7 +101,7 @@ class ItemModal extends Component {
                         >
                         {platforms 
                           ? platforms.map(
-                            platform => <option value={platform}>{platform}</option>)
+                            (platform, i) => <option  key={i} value={platform}>{platform}</option>)
                           : ''}
                         </select>
                       </div>

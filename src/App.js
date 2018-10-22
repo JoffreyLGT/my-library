@@ -4,7 +4,7 @@ import ItemModal from "./components/ItemModal";
 import "./App.css";
 import "bulma/css/bulma.css";
 
-import {fakeServerData, fakePlatformsData} from "./FakeServerData";
+import { fakeServerData, fakePlatformsData } from "./FakeServerData";
 
 class App extends Component {
   constructor(props) {
@@ -16,6 +16,7 @@ class App extends Component {
     };
     this.addItem = this.addItem.bind(this);
     this.updateItem = this.updateItem.bind(this);
+    this.filterItems = this.filterItems.bind(this);
   }
 
   componentDidMount() {
@@ -24,7 +25,8 @@ class App extends Component {
     let data = Object.assign({}, fakeServerData);
     setTimeout(() => {
       this.setState({
-        data
+        serverData: Object.assign({}, data),
+        data: Object.assign({}, data)
       });
     }, 1000);
     let platforms = Object.assign([], fakePlatformsData);
@@ -35,22 +37,61 @@ class App extends Component {
     }, 3000);
   }
 
+  /** Add an item in the serverData state and trigger filterItems(). */
   addItem(item) {
-    let newItems = Object.assign([], this.state.data.items);
-    newItems.push(item);
+    let newItems = Object.assign([], this.state.serverData.items);
+    // Get the last id in the serverData
+    let lastId = newItems.reduce(
+      (biggest, current) => (biggest < current.id ? current.id : biggest),
+      0
+    );
+    let newItem = Object.assign({}, item, { id: lastId + 1 });
+    newItems.push(newItem);
 
     let newState = Object.assign({}, this.state);
-    newState.data.items = Object.assign([], newItems);
+    newState.serverData.items = Object.assign([], newItems);
     this.setState(newState);
+    this.filterItems();
   }
 
+  /** Update an item in the serverData state and trigger filterItems(). */
   updateItem(item) {
-    let newItems = Object.assign([], this.state.data.items);
-    newItems[item.key] = item;
+    // Copie the serverData in a new array.
+    let newItems = Object.assign([], this.state.serverData.items);
+    // Get the item position in the list and update the item.
+    let itemPosition = newItems.findIndex(
+      currentItem => currentItem.id === item.id
+    );
 
+    newItems[itemPosition] = item;
+    // Assign the new items in the serverData and set the new state.
     let newState = Object.assign({}, this.state);
-    newState.data.items = Object.assign([], newItems);
+    newState.serverData.items = Object.assign([], newItems);
     this.setState(newState);
+    // Trigger the filter.
+    this.filterItems();
+  }
+
+  /** Filter the list of elements displayed on the page. */
+  filterItems() {
+    // Get the values from the fields
+    let stringToSearch = document.getElementById("searchItem").value;
+    let selectedPlatform = document.getElementById("platformFilter").value;
+
+    // Declare a new object and filter it
+    let filteredState = Object.assign({}, this.state);
+
+    let serverItems = Object.assign([], filteredState.serverData.items);
+    filteredState.data.items = serverItems
+      .filter(item => item.name.toLowerCase().includes(stringToSearch))
+      .filter(
+        item =>
+          selectedPlatform.toLowerCase() === "all platforms" ||
+          item.platform.toLowerCase() === selectedPlatform.toLowerCase()
+      );
+
+    // Set this object as a new state
+    this.setState(filteredState);
   }
 
   render() {
@@ -78,32 +119,23 @@ class App extends Component {
                 </span>
                 <div className="control" style={{ padding: "0 10px 0 10px" }}>
                   <input
+                    id="searchItem"
                     className="input"
                     type="text"
                     placeholder="Search"
-                    onChange={e => {
-                      let stringToSearch = e.target.value;
-                      let newState = Object.assign({}, this.state);
-                      newState.data.items = fakeServerData.items.filter(
-                        item => {
-                          return item.name
-                            .toLowerCase()
-                            .includes(stringToSearch);
-                        }
-                      );
-                      this.setState(newState);
-                    }}
+                    onChange={this.filterItems}
                   />
                 </div>
                 <div style={{ padding: "0 10px 0 0px" }}>
-                  <div class="control">
-                    <div class="select">
-                      <select>
+                  <div className="control">
+                    <div className="select">
+                      <select id="platformFilter" onChange={this.filterItems}>
                         <option>All Platforms</option>
-                        {this.state.platforms 
-                          ? this.state.platforms.map(
-                            platform => <option>{platform}</option>)
-                          : ''}
+                        {this.state.platforms
+                          ? this.state.platforms.map((platform, i) => (
+                              <option key={i}>{platform}</option>
+                            ))
+                          : ""}
                       </select>
                     </div>
                   </div>
@@ -117,6 +149,7 @@ class App extends Component {
                 ? this.state.data.items.map((item, i) => (
                     <Item
                       key={i}
+                      id={item.id}
                       name={item.name}
                       platform={item.platform}
                       url={item.url}
