@@ -4,16 +4,16 @@ import ItemModal from "./components/ItemModal";
 import "./App.css";
 import "bulma/css/bulma.css";
 
-import fakeServerData from "./FakeServerData";
+import {fakeServerData, fakePlatformsData} from "./FakeServerData";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      'showModal':'false',
-      'modalAction':'add',
-      'modalItem':{}
-    }
+      showModal: "false",
+      modalAction: "add",
+      modalItem: {}
+    };
     this.addItem = this.addItem.bind(this);
     this.updateItem = this.updateItem.bind(this);
   }
@@ -27,6 +27,12 @@ class App extends Component {
         data
       });
     }, 1000);
+    let platforms = Object.assign([], fakePlatformsData);
+    setTimeout(() => {
+      this.setState({
+        platforms
+      });
+    }, 3000);
   }
 
   addItem(item) {
@@ -39,7 +45,7 @@ class App extends Component {
   }
 
   updateItem(item) {
-    let newItems = Object.assign([], this.state.data.items)
+    let newItems = Object.assign([], this.state.data.items);
     newItems[item.key] = item;
 
     let newState = Object.assign({}, this.state);
@@ -58,14 +64,16 @@ class App extends Component {
                 's library
               </h1>
               <div className="header__bar">
-                <span 
-                  className="button is-primary" 
-                  onClick={()=> this.setState(
-                    {
-                      'showModal':'true',
-                      'modalAction':'add',
-                      'modalItem':{}
-                    })}>
+                <span
+                  className="button is-primary"
+                  onClick={() =>
+                    this.setState({
+                      showModal: "true",
+                      modalAction: "add",
+                      modalItem: {}
+                    })
+                  }
+                >
                   Add a new item
                 </span>
                 <div className="control" style={{ padding: "0 10px 0 10px" }}>
@@ -87,6 +95,19 @@ class App extends Component {
                     }}
                   />
                 </div>
+                <div style={{ padding: "0 10px 0 0px" }}>
+                  <div class="control">
+                    <div class="select">
+                      <select>
+                        <option>All Platforms</option>
+                        {this.state.platforms 
+                          ? this.state.platforms.map(
+                            platform => <option>{platform}</option>)
+                          : ''}
+                      </select>
+                    </div>
+                  </div>
+                </div>
                 <span>{this.state.data.items.length} items</span>
               </div>
             </header>
@@ -99,13 +120,14 @@ class App extends Component {
                       name={item.name}
                       platform={item.platform}
                       url={item.url}
-                      onClick={()=> this.setState(
-                        {
-                          'modalItem': Object.assign({}, item, {'key':i}),
-                          'showModal':'true',
-                          'modalAction':'edit'
-                        })}
-                      />
+                      onClick={() =>
+                        this.setState({
+                          modalItem: Object.assign({}, item, { key: i }),
+                          showModal: "true",
+                          modalAction: "edit"
+                        })
+                      }
+                    />
                   ))
                 : ""}
             </div>
@@ -113,17 +135,24 @@ class App extends Component {
               id="addItemModal"
               action={this.state.modalAction}
               visible={this.state.showModal}
-              title= {this.state.modalAction === 'add' 
-                ? "Add a new item"
-                : "Edit an item"}
+              platforms={this.state.platforms}
+              title={
+                this.state.modalAction === "add"
+                  ? "Add a new item"
+                  : "Edit an item"
+              }
               modalItem={this.state.modalItem}
-              onHide={()=> this.setState({
-                'modalItem': {},
-                'showModal':'false'
-               })}
-              onSave={this.state.modalAction === 'add' 
-                ? this.addItem
-                : this.updateItem}
+              onHide={() =>
+                this.setState({
+                  modalItem: {},
+                  showModal: "false"
+                })
+              }
+              onSave={
+                this.state.modalAction === "add"
+                  ? this.addItem
+                  : this.updateItem
+              }
             />
           </div>
         ) : (

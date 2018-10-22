@@ -25,5 +25,8 @@ const fakeServerData = {
       'url':'https://vignette.wikia.nocookie.net/yogscast/images/e/e7/Stellaris_cover_art.jpg/revision/latest?cb=20160520205240',
     },
   ]
-}
-export default fakeServerData;
+};
+
+const fakePlatformsData = ['PC', 'Xbox One', 'Switch'];
+
+export {fakeServerData, fakePlatformsData};
