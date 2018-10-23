@@ -34,6 +34,13 @@ class ItemModal extends Component {
   render() {
     const { id, platforms, title, onSave, visible, onHide } = this.props;
 
+    // Make the page in the background fixed when the modal is displayed
+    if (visible === "true") {
+      document.getElementsByTagName("html")[0].classList.add("is-clipped");
+    }else{
+      document.getElementsByTagName("html")[0].classList.remove("is-clipped");
+    }
+
     /** Empties the fields, the states and calls onHide props. */
     const closeModal = () => {
       // Empty all the input fields to reset the modal
