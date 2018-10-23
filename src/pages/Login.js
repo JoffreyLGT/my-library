@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
 import { fakeAccounts } from "./../FakeServerData";
 
 class Login extends Component {
@@ -18,9 +17,6 @@ class Login extends Component {
   }
 
   render() {
-    if (this.props.isLoggedIn) {
-      return <Redirect push to="/" />;
-    }
     return (
       <div class="columns is-three-quarters-mobile">
         <div class="column is-half is-offset-one-quarter">

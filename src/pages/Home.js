@@ -99,8 +99,7 @@ class Home extends Component {
           <div>
             <header className="header">
               <h1 className="header__title">
-                {this.state.data.name}
-                's library
+                {this.state.data.name + "'s library"}
               </h1>
               <div className="header__bar">
                 <span

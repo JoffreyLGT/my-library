@@ -44,18 +44,22 @@ class App extends Component {
               this.state && this.state.isLoggedIn ? (
                 <Home />
               ) : (
-                <Redirect to="/login" />
+                <Redirect to="/" />
               )
             }
           />
           <Route
             path="/login"
-            component={() => (
-              <Login
-                isLoggedIn={this.state.isLoggedIn}
-                onSuccess={this.setLoggedIn}
-              />
-            )}
+            component={() =>
+              this.state && this.state.isLoggedIn ? (
+                <Redirect to="/" />
+              ) : (
+                <Login
+                  isLoggedIn={this.state.isLoggedIn}
+                  onSuccess={this.setLoggedIn}
+                />
+              )
+            }
           />
         </div>
       </Router>
