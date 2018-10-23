@@ -83,7 +83,7 @@ class App extends Component {
     let serverItems = Object.assign([], filteredState.serverData.items);
     filteredState.data.items = serverItems.filter(
       item =>
-        item.name.toLowerCase().includes(stringToSearch) &&
+        item.name.toLowerCase().includes(stringToSearch.toLowerCase()) &&
         (selectedPlatform.toLowerCase() === "all platforms" ||
           item.platform.toLowerCase() === selectedPlatform.toLowerCase())
     );
